@@ -9,6 +9,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import * as socket from "./src/sockets/socket_io.js";
 import initializePassport from "./src/auth/passport-config.js";
+import { PORT } from "./src/config.js";
 
 // Express
 
