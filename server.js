@@ -9,6 +9,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import * as socket from "./src/sockets/socket_io.js";
 import initializePassport from "./src/auth/passport-config.js";
+import { PORT } from "./src/config.js";
 
 // Express
 
@@ -42,7 +43,6 @@ app.use("/", router);
 // Server
 
 const httpServer = createServer(app);
-const PORT = 8080;
 const server = httpServer.listen(PORT, () => {
   console.log(`Servidor listo en el puerto ${server.address().port}`);
 });
