@@ -4,7 +4,7 @@ export const infoRouter = Router();
 export const randomNumberRouter = Router();
 
 infoRouter.get("/", (_req, res) => {
-  const args = process.argv;
+  const args = process.argv.slice(2);
   const os = process.platform;
   const node = process.version;
   const mem = process.memoryUsage().rss;
