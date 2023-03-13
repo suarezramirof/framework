@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { MongoAtlasUri } from "../config.js";
+mongoose.set("strictQuery", true);
 try {
   mongoose.connect(
     MongoAtlasUri,
