@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { fork } from "child_process";
+import { cpus } from "os";
 export const infoRouter = Router();
 export const randomNumberRouter = Router();
 
@@ -11,8 +12,9 @@ infoRouter.get("/", (_req, res) => {
   const id = process.pid;
   const dir = process.cwd();
   const path = process.execPath;
+  const numCpus = cpus().length;
 
-  res.render("pages/info", { args, os, node, mem, path, id, dir });
+  res.render("pages/info", { args, os, node, mem, path, id, dir, numCpus });
 });
 
 randomNumberRouter.get("/randoms", (req, res) => {
