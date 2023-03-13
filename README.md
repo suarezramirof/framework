@@ -57,5 +57,22 @@ import { cpus } from "os";
 const numCpus = cpus().length; // se agrega en los parámetros que se pasan al render
 
 ```
+_Vista de `/info`_
 
 ![Página info](https://github.com/suarezramirof/process/blob/master/img/info.png)
+
+***
+
+Ejecutar el servidor (modos FORK y CLUSTER) con nodemon verificando el número de procesos tomados por node.
+
+_Fork_
+
+![ejecución con nodemon en modo fork](https://github.com/suarezramirof/process/blob/master/img/nodemon_fork.png)
+
+![procesos node activos](https://github.com/suarezramirof/process/blob/master/img/fork_node_process.png)
+
+_Cluster_
+
+![ejecución con nodemon en modo cluster](https://github.com/suarezramirof/process/blob/master/img/nodemon_cluster.png)
+
+![procesos node activos](https://github.com/suarezramirof/process/blob/master/img/cluster_node_process.png)
