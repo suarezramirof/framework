@@ -76,3 +76,11 @@ _Cluster_
 ![ejecución con nodemon en modo cluster](https://github.com/suarezramirof/process/blob/master/img/nodemon_cluster.png)
 
 ![procesos node activos](https://github.com/suarezramirof/process/blob/master/img/cluster_node_process.png)
+
+***
+
+Ejecutar el servidor (con los parámetros adecuados) utilizando Forever, verificando su correcta operación. Listar los procesos por Forever y por sistema operativo.
+
+![ejecución con forever y listado por forever](https://github.com/suarezramirof/process/blob/master/img/forever.png)
+
+![procesos node activos](https://github.com/suarezramirof/process/blob/master/img/forever_node_process.png)
