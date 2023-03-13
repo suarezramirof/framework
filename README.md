@@ -84,3 +84,9 @@ Ejecutar el servidor (con los parámetros adecuados) utilizando Forever, verific
 ![ejecución con forever y listado por forever](https://github.com/suarezramirof/process/blob/master/img/forever.png)
 
 ![procesos node activos](https://github.com/suarezramirof/process/blob/master/img/forever_node_process.png)
+
+***
+
+Ejecutar el servidor (con los parámetros adecuados: modo FORK) utilizando PM2 en sus modos modo fork y cluster. Listar los procesos por PM2 y por sistema operativo.
+
+Tanto en Forever como en PM2 permitir el modo escucha, para que la actualización del código del servidor se vea reflejado inmediatamente en todos los procesos.
