@@ -2,7 +2,7 @@
 
 Tomando con base el proyecto que vamos realizando, agregar un parámetro más en la ruta de comando que permita ejecutar al servidor en modo fork o cluster. Dicho parámetro será 'FORK' en el primer caso y 'CLUSTER' en el segundo, y de no pasarlo, el servidor iniciará en modo fork.
 
-Se realizan los siguientes cambios en `config.js`
+_Se realizan los siguientes cambios en `config.js`_
 
 ```
 const options = {
@@ -20,7 +20,7 @@ export const { PORT, MODE } = parseArgs(commandLineArgs, options);
 
 ```
 
-Y los siguientes cambios en `server.js`
+_Y los siguientes cambios en `server.js`_
 
 ```
 import { PORT, MODE } from "./src/config.js";
@@ -45,3 +45,17 @@ if (MODE === "CLUSTER" && cluster.isPrimary) {
 }
 
 ```
+
+---
+
+Agregar en la vista info, el número de procesadores presentes en el servidor.
+
+_Se agregan las siguientes líneas en `miscRoutes.js`_
+
+```
+import { cpus } from "os";
+const numCpus = cpus().length; // se agrega en los parámetros que se pasan al render
+
+```
+
+![Página info](https://github.com/suarezramirof/process/blob/master/img/info.png)
