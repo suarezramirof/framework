@@ -57,11 +57,12 @@ import { cpus } from "os";
 const numCpus = cpus().length; // se agrega en los parámetros que se pasan al render
 
 ```
+
 _Vista de `/info`_
 
 ![Página info](https://github.com/suarezramirof/process/blob/master/img/info.png)
 
-***
+---
 
 Ejecutar el servidor (modos FORK y CLUSTER) con nodemon verificando el número de procesos tomados por node.
 
@@ -77,7 +78,7 @@ _Cluster_
 
 ![procesos node activos](https://github.com/suarezramirof/process/blob/master/img/cluster_node_process.png)
 
-***
+---
 
 Ejecutar el servidor (con los parámetros adecuados) utilizando Forever, verificando su correcta operación. Listar los procesos por Forever y por sistema operativo.
 
@@ -85,8 +86,14 @@ Ejecutar el servidor (con los parámetros adecuados) utilizando Forever, verific
 
 ![procesos node activos](https://github.com/suarezramirof/process/blob/master/img/forever_node_process.png)
 
-***
+---
 
 Ejecutar el servidor (con los parámetros adecuados: modo FORK) utilizando PM2 en sus modos modo fork y cluster. Listar los procesos por PM2 y por sistema operativo.
 
 Tanto en Forever como en PM2 permitir el modo escucha, para que la actualización del código del servidor se vea reflejado inmediatamente en todos los procesos.
+
+![ejecución con pm2 en modo fork y cluster](https://github.com/suarezramirof/process/blob/master/img/pm2.png)
+
+Hacer pruebas de finalización de procesos fork y cluster en los casos que corresponda.
+
+![finalización con pm2](https://github.com/suarezramirof/process/blob/master/img/pm2_stop.png)
