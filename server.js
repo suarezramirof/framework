@@ -9,48 +9,66 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import * as socket from "./src/sockets/socket_io.js";
 import initializePassport from "./src/auth/passport-config.js";
-import { PORT } from "./src/config.js";
+import { PORT, MODE } from "./src/config.js";
+import cluster from "cluster";
+import os from "os";
 
-// Express
+// Primary
 
-const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(express.static("./public"));
-app.use(cors());
+if (MODE === "CLUSTER" && cluster.isPrimary) {
+  const numCpus = os.cpus().length;
+  console.log("Primary cluster server");
 
-//Engine
+  for (let i = 0; i < numCpus; i++) {
+    cluster.fork();
+  }
 
-app.engine("hbs", hbs.engine);
-app.set("views", "public/views");
-app.set("view engine", "hbs");
+  cluster.on("exit", (worker) => {
+    console.log(`Worker ${process.pid} died`);
+    cluster.fork();
+  });
+} else {
+  // Express
 
-// Session
+  const app = express();
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: false }));
+  app.use(express.static("./public"));
+  app.use(cors());
 
-app.use(cookieParser());
-app.use(sessionMiddleware);
+  //Engine
 
-// Passport
+  app.engine("hbs", hbs.engine);
+  app.set("views", "public/views");
+  app.set("view engine", "hbs");
 
-app.use(passport.initialize());
-app.use(passport.session());
-initializePassport(passport);
+  // Session
 
-// Route
+  app.use(cookieParser());
+  app.use(sessionMiddleware);
 
-app.use("/", router);
+  // Passport
 
-// Server
+  app.use(passport.initialize());
+  app.use(passport.session());
+  initializePassport(passport);
 
-const httpServer = createServer(app);
-const server = httpServer.listen(PORT, () => {
-  console.log(`Servidor listo en el puerto ${server.address().port}`);
-});
-server.on("error", (error) => {
-  console.log(`Error en el servidor: ${error}`);
-});
+  // Route
 
-// Socket io
+  app.use("/", router);
 
-const io = new Server(httpServer);
-socket.start(io);
+  // Server
+
+  const httpServer = createServer(app);
+  const server = httpServer.listen(PORT, () => {
+    console.log(`Servidor listo en el puerto ${server.address().port}`);
+  });
+  server.on("error", (error) => {
+    console.log(`Error en el servidor: ${error}`);
+  });
+
+  // Socket io
+
+  const io = new Server(httpServer);
+  socket.start(io);
+}

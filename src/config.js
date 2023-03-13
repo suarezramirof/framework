@@ -10,12 +10,14 @@ import parseArgs from "minimist";
 const options = {
   alias: {
     p: "PORT",
+    m: "MODE"
   },
   default: {
     PORT: 8080,
+    MODE: "FORK"
   },
 };
 
 const commandLineArgs = process.argv.slice(2);
 
-export const { PORT } = parseArgs(commandLineArgs, options);
+export const { PORT, MODE } = parseArgs(commandLineArgs, options);
