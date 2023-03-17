@@ -8,7 +8,7 @@ export const randomNumberRouter = Router();
 infoRouter.get("/", getInfo);
 infoRouter.get("/gzip", compression(), getInfo);
 
-const getInfo = (_req, res) => {
+function getInfo(_req, res) {
   const args = process.argv.slice(2);
   const os = process.platform;
   const node = process.version;
