@@ -12,6 +12,7 @@ import initializePassport from "./src/auth/passport-config.js";
 import { PORT, MODE } from "./src/config.js";
 import cluster from "cluster";
 import os from "os";
+import pinoLogger from "./logger.js";
 
 // Primary
 
@@ -54,6 +55,13 @@ if (MODE === "CLUSTER" && cluster.isPrimary) {
   initializePassport(passport);
 
   // Route
+
+  const logger = pinoLogger.buildConsoleLogger();
+  
+  app.use("/", (req, res, next) => {
+    logger.info(`Solicitud con ruta < ${req.originalUrl} > y metodo ${req.method} recibida.`);
+    next();
+  });
 
   app.use("/", router);
 
