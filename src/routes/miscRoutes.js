@@ -1,10 +1,14 @@
 import { Router } from "express";
 import { fork } from "child_process";
 import { cpus } from "os";
+import compression from "compression";
 export const infoRouter = Router();
 export const randomNumberRouter = Router();
 
-infoRouter.get("/", (_req, res) => {
+infoRouter.get("/", getInfo);
+infoRouter.get("/gzip", compression(), getInfo);
+
+const getInfo = (_req, res) => {
   const args = process.argv.slice(2);
   const os = process.platform;
   const node = process.version;
@@ -13,9 +17,9 @@ infoRouter.get("/", (_req, res) => {
   const dir = process.cwd();
   const path = process.execPath;
   const numCpus = cpus().length;
-
+  
   res.render("pages/info", { args, os, node, mem, path, id, dir, numCpus });
-});
+};
 
 randomNumberRouter.get("/randoms", (req, res) => {
   const qty = req.query.cant || 100000000;
