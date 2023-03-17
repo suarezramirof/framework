@@ -221,7 +221,7 @@ _Con info por consola_
 
 ![Artillery con consola](https://github.com/suarezramirof/process/blob/master/img/artillery_console.png)
 
-_`result_console.txt`_
+_[result_console.txt](https://github.com/suarezramirof/process/blob/master/artillery/result_console.txt)_
 
 ```
 ...
@@ -248,7 +248,7 @@ _Sin info por consola_
 
 ![Artillery sin consola](https://github.com/suarezramirof/process/blob/master/img/artillery_noconsole.png)
 
-_`result_noconsole.txt`_
+_[result_noconsole.txt](https://github.com/suarezramirof/process/blob/master/artillery/result_noconsole.txt)_
 
 ```
 ...
@@ -267,3 +267,4 @@ http.response_time:
   p99: ......................................................................... 206.5
 ...
 ```
+
