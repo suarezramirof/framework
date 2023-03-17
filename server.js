@@ -54,7 +54,7 @@ if (MODE === "CLUSTER" && cluster.isPrimary) {
   app.use(passport.session());
   initializePassport(passport);
 
-  // Route
+  // Logs
 
   const logger = pinoLogger.buildConsoleLogger();
   
@@ -62,6 +62,8 @@ if (MODE === "CLUSTER" && cluster.isPrimary) {
     logger.info(`Solicitud con ruta < ${req.originalUrl} > y metodo ${req.method} recibida.`);
     next();
   });
+
+  //Route
 
   app.use("/", router);
 
