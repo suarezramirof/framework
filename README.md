@@ -164,3 +164,106 @@ _error.log_
 ```
 
 ## Segunda parte
+
+Luego, realizar el análisis completo de performance del servidor con el que venimos trabajando.
+Vamos a trabajar sobre la ruta '/info', en modo fork, agregando ó extrayendo un console.log de la información colectada antes de devolverla al cliente. Además desactivaremos el child_process de la ruta '/randoms'
+Para ambas condiciones (con o sin console.log) en la ruta '/info' OBTENER:
+- El perfilamiento del servidor, realizando el test con --prof de node.js. Analizar los resultados obtenidos luego de procesarlos con --prof-process. 
+- Utilizaremos como test de carga Artillery en línea de comandos, emulando 50 conexiones concurrentes con 20 request por cada una. Extraer un reporte con los resultados en archivo de texto.
+
+_config.js_
+
+```
+...
+const options = {
+  alias: {
+    p: "PORT",
+    m: "MODE",
+    c: "CONSOLE"
+  },
+  default: {
+    PORT: 8080,
+    MODE: "FORK",
+    CONSOLE: false
+  },
+};
+...
+export const { PORT, MODE, CONSOLE } = parseArgs(commandLineArgs, options);
+
+```
+_miscRoutes.js_
+
+```
+
+import { CONSOLE } from "../config.js";
+
+infoRouter.get("/", showInfo);
+infoRouter.get("/gzip", compression(), showInfo);
+
+function showInfo(_req, res) {
+  const info = getInfo();
+  if (CONSOLE) console.log(info);
+  return res.render("pages/info", info);
+}
+
+function getInfo() {
+  ...
+  return { args, os, node, mem, path, id, dir, numCpus };
+}
+
+```
+
+- Para las pruebas se elimina transitoriamente el middleware `checkAuthenticated` en la ruta `/info`
+
+_Con info por consola_
+
+![Inicio del servidor con info por consola](https://github.com/suarezramirof/process/blob/master/img/server_info_console.png)
+
+![Artillery con consola](https://github.com/suarezramirof/process/blob/master/img/artillery_console.png)
+
+_`result_console.txt`_
+
+```
+...
+--------------------------------
+Summary report @ 20:18:25(-0300)
+--------------------------------
+
+http.codes.200: ................................................................ 1000
+http.request_rate: ............................................................. 131/sec
+http.requests: ................................................................. 1000
+http.response_time:
+  min: ......................................................................... 30
+  max: ......................................................................... 529
+  median: ...................................................................... 361.5
+  p95: ......................................................................... 441.5
+  p99: ......................................................................... 459.5
+
+...
+```
+
+_Sin info por consola_
+
+![Inicio del servidor sin info por consola](https://github.com/suarezramirof/process/blob/master/img/server_info_noconsole.png)
+
+![Artillery sin consola](https://github.com/suarezramirof/process/blob/master/img/artillery_noconsole.png)
+
+_`result_noconsole.txt`_
+
+```
+...
+--------------------------------
+Summary report @ 20:19:16(-0300)
+--------------------------------
+
+http.codes.200: ................................................................ 1000
+http.request_rate: ............................................................. 286/sec
+http.requests: ................................................................. 1000
+http.response_time:
+  min: ......................................................................... 10
+  max: ......................................................................... 230
+  median: ...................................................................... 141.2
+  p95: ......................................................................... 202.4
+  p99: ......................................................................... 206.5
+...
+```
