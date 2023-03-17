@@ -12,7 +12,7 @@ router.use("/info", checkAuthenticated, infoRouter);
 const warnLogger = pinoLogger.buildWarnLogger();
 const logger = pinoLogger.buildConsoleLogger();
 router.use("*", (req, res) => {
-  logger.info(
+  logger.warn(
     `Ruta < ${req.originalUrl} > con metodo ${req.method} no implementada`
   );
   warnLogger.warn(
