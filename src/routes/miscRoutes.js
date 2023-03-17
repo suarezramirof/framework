@@ -4,11 +4,18 @@ import { cpus } from "os";
 import compression from "compression";
 export const infoRouter = Router();
 export const randomNumberRouter = Router();
+import { CONSOLE } from "../config.js";
 
-infoRouter.get("/", getInfo);
-infoRouter.get("/gzip", compression(), getInfo);
+infoRouter.get("/", showInfo);
+infoRouter.get("/gzip", compression(), showInfo);
 
-function getInfo(_req, res) {
+function showInfo(_req, res) {
+  const info = getInfo();
+  if (CONSOLE) console.log(info);
+  return res.render("pages/info", info);
+}
+
+function getInfo() {
   const args = process.argv.slice(2);
   const os = process.platform;
   const node = process.version;
@@ -17,9 +24,8 @@ function getInfo(_req, res) {
   const dir = process.cwd();
   const path = process.execPath;
   const numCpus = cpus().length;
-  
-  res.render("pages/info", { args, os, node, mem, path, id, dir, numCpus });
-};
+  return { args, os, node, mem, path, id, dir, numCpus };
+}
 
 randomNumberRouter.get("/randoms", (req, res) => {
   const qty = req.query.cant || 100000000;
