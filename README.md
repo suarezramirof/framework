@@ -286,7 +286,7 @@ _Luego se procesa el archivo_
 node --prof-process v8-noconsole.log > prof_noconsole.txt
 
 ```
-_[prof_noconsole.txt](https://github.com/suarezramirof/process/blob/master/artillery/prof_noconsole.txt)_
+_[prof_noconsole.txt](https://github.com/suarezramirof/process/blob/master/prof_noconsole.txt)_
 
 ```
 [Summary]:
@@ -314,7 +314,7 @@ _Luego se procesa el archivo_
 node --prof-process v8-console.log > prof_console.txt
 
 ```
-_[prof_console.txt](https://github.com/suarezramirof/process/blob/master/artillery/prof_console.txt)_
+_[prof_console.txt](https://github.com/suarezramirof/process/blob/master/prof_console.txt)_
 
 ```
  [Summary]:
