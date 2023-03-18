@@ -268,3 +268,61 @@ http.response_time:
 ...
 ```
 
+Perfilamiento
+
+_Sin info por consola_
+
+```
+node --prof server.js -p 8080
+
+artillery quick --count 50 -n 20 "http://localhost:8080/info"
+
+```
+
+_Se renombra el archivo generado a `v8-noconsole.log`_
+_Luego se procesa el archivo_
+
+```
+node --prof-process v8-noconsole.log > prof_noconsole.txt
+
+```
+_[prof_noconsole.txt](https://github.com/suarezramirof/process/blob/master/artillery/prof_noconsole.txt)_
+
+```
+[Summary]:
+   ticks  total  nonlib   name
+     34    1.1%  100.0%  JavaScript
+      0    0.0%    0.0%  C++
+     10    0.3%   29.4%  GC
+   3160   98.9%          Shared libraries
+
+```
+
+_Con info por consola_
+
+```
+node --prof server.js -p 8080 -c
+
+artillery quick --count 50 -n 20 "http://localhost:8080/info"
+
+```
+
+_Se renombra el archivo generado a `v8-console.log`_
+_Luego se procesa el archivo_
+
+```
+node --prof-process v8-console.log > prof_console.txt
+
+```
+_[prof_console.txt](https://github.com/suarezramirof/process/blob/master/artillery/prof_console.txt)_
+
+```
+ [Summary]:
+   ticks  total  nonlib   name
+     54    3.2%   96.4%  JavaScript
+      0    0.0%    0.0%  C++
+     12    0.7%   21.4%  GC
+   1626   96.7%          Shared libraries
+      2    0.1%          Unaccounted
+
+```
