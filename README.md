@@ -162,7 +162,7 @@ _error.log_
 {"level":50,"time":1679089962456,"pid":13192,"hostname":"DESKTOP-KB12V27","msg":"Error al agregar producto"}
 
 ```
-
+***
 ## Segunda parte
 
 Luego, realizar el análisis completo de performance del servidor con el que venimos trabajando.
@@ -326,3 +326,72 @@ _[prof_console.txt](https://github.com/suarezramirof/process/blob/master/prof_co
       2    0.1%          Unaccounted
 
 ```
+
+- El perfilamiento del servidor con el modo inspector de node.js --inspect. Revisar el tiempo de los procesos menos performantes sobre el archivo fuente de inspección.
+
+`node --inspect server.js`
+
+`artillery quick --count 50 -n 20 "http://localhost:8080/info"`
+
+![Profiler sin consola](https://github.com/suarezramirof/process/blob/master/img/wo_console_profile.png)
+
+`node --inpspect server.js -c`
+
+`artillery quick --count 50 -n 20 "http://localhost:8080/info"`
+
+![Profiler con consola](https://github.com/suarezramirof/process/blob/master/img/w_console_profile.png)
+
+***
+
+## Tercera parte
+
+Luego utilizaremos Autocannon en línea de comandos, emulando 100 conexiones concurrentes realizadas en un tiempo de 20 segundos. Extraer un reporte con los resultados (puede ser un print screen de la consola)
+
+_[benchmark.js](https://github.com/suarezramirof/process/blob/master/benchmark/benchmark.js)_
+
+```
+import autocannon from "autocannon";
+import { PassThrough } from "stream";
+
+function run(url) {
+  const buf = [];
+  const outputStream = new PassThrough();
+
+  const inst = autocannon({
+    url,
+    connections: 100,
+    duration: 20,
+  });
+
+  autocannon.track(inst, { outputStream });
+
+  outputStream.on("data", (data) => {
+    buf.push(data);
+  });
+  inst.on("done", () => {
+    process.stdout.write(Buffer.concat(buf));
+  });
+}
+
+console.log("Running benchmark...");
+
+run("http://localhost:8080/info");
+
+```
+- Contra `node server.js -c`
+
+![benchmark con node server.js -c](https://github.com/suarezramirof/process/blob/master/img/benchmark_node_console.png)
+
+- Contra `node server.js`
+
+![benchmark con node server.js](https://github.com/suarezramirof/process/blob/master/img/benchmark_node_noconsole.png)
+
+- Contra `0x server.js -c`
+
+![benchmark con 0x server.js -c](https://github.com/suarezramirof/process/blob/master/img/benchmark_0x_console.png)
+
+- Contra `0x server.js`
+
+![benchmark con 0x server.js](https://github.com/suarezramirof/process/blob/master/img/benchmark_0x_noconsole.png)
+
+_La diferencia entre req/sec y latencia se hace menos evidente al correr el servidor con 0x_
