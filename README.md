@@ -395,3 +395,25 @@ run("http://localhost:8080/info");
 ![benchmark con 0x server.js](https://github.com/suarezramirof/process/blob/master/img/benchmark_0x_noconsole.png)
 
 _La diferencia entre req/sec y latencia se hace menos evidente al correr el servidor con 0x_
+
+- El diagrama de flama con 0x, emulando la carga con Autocannon con los mismos parámetros anteriores.
+
+_Diagramas con 0x_
+
+- _Con salida por consola_
+
+![flamegraph 0x console](https://github.com/suarezramirof/process/blob/master/img/flamegraph_0x_console.png)
+
+- _Sin salida por consola_
+
+![flamegraph 0x no console](https://github.com/suarezramirof/process/blob/master/img/flamegraph_0x_noconsole.png)
+
+_Diagramas con Flame chart visualizer (usando los cpu profiles)_
+
+- _Con salida por consola_
+
+![flamegraph cpuprofile console](https://github.com/suarezramirof/process/blob/master/img/flamegraph_cpuprofile_console.png)
+
+- _Sin salida por consola_
+
+![flamegraph cpuprofile no console](https://github.com/suarezramirof/process/blob/master/img/flamegraph_cpuprofile_noconsole.png)
