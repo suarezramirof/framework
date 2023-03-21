@@ -94,7 +94,7 @@ function updateMensajes(msjs) {
 // WebSocket
 
 socket.on(keys.nuevoProducto, () => {
-  fetch("http://localhost/api/productos")
+  fetch("https://process-production.up.railway.app/api/productos")
     .then((res) => res.json())
     .then((data) => {
       updateProductos({ items: data });
