@@ -14,7 +14,7 @@ const options = {
     c: "CONSOLE"
   },
   default: {
-    PORT: 8080,
+    PORT: 80,
     MODE: "FORK",
     CONSOLE: false
   },
