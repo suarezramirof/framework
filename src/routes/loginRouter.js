@@ -1,6 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
-
+import { config } from "dotenv";
+config();
 const loginRouter = Router();
 
 loginRouter.get("/", (_req, res) => {
@@ -42,9 +43,11 @@ loginRouter.get("/loginfailure", checkNotAuthenticated, (_req, res) => {
   res.render("pages/loginfailure");
 });
 
+const route = process.env.HOST == "LOCAL" ? true : false;
+
 loginRouter.get("/home", checkAuthenticated, (req, res) => {
   req.session.counter++;
-  res.render("pages/home", { user: req.session.passport.user.username });
+  res.render("pages/home", { user: req.session.passport.user.username, ruta: route });
 });
 
 loginRouter.get("/logout", checkAuthenticated, (req, res) => {

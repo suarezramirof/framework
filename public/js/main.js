@@ -93,8 +93,17 @@ function updateMensajes(msjs) {
 
 // WebSocket
 
+let ruta = "";
+if (route == "LOCAL") {
+  ruta = "http://localhost:8080/"
+} else if (route == "RAILWAY") {
+  ruta = "https://process-production.up.railway.app/"
+}
+
+
+
 socket.on(keys.nuevoProducto, () => {
-  fetch("https://process-production.up.railway.app/api/productos")
+  fetch(`${ruta}api/productos`)
     .then((res) => res.json())
     .then((data) => {
       updateProductos({ items: data });
