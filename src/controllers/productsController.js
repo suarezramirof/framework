@@ -18,7 +18,7 @@ class ProductsController {
   };
 
   addProduct = (req, res) => {
-    if (!req.body.nombre || req.body.precio || req.body.foto) {
+    if (!req.body.nombre || !req.body.precio || !req.body.foto) {
       logger.error("Error al agregar producto");
       errorLogger.error("Error al agregar producto");
       return res.sendStatus(400);
