@@ -10,11 +10,8 @@ export function start(io) {
     socket.on(keys.cargarProducto, (prod) => {
       productsController.addProductSocket(prod, io);
     });
-    socket.on(keys.enviarMensaje, (msj) =>
-      messagesController
-        .addMessage(msj, io)
-        .then(() => console.log("Mensaje enviado con éxito"))
-        .catch((error) => console.log(error))
+    socket.on(keys.enviarMensaje, () =>
+      socket.emit(keys.nuevoMensaje)
     );
   });
 }

@@ -1,10 +1,12 @@
 import { Router } from "express";
 import loginRouter, { checkAuthenticated } from "./loginRouter.js";
 import productsRouter from "./productsRouter.js";
+import messageRouter from "./messageRouter.js";
 import { infoRouter, randomNumberRouter } from "./miscRoutes.js";
 import pinoLogger from "../../logger.js";
 const router = Router();
 router.use("/api", checkAuthenticated, productsRouter);
+router.use("/api", checkAuthenticated, messageRouter);
 router.use("/api", checkAuthenticated, randomNumberRouter);
 router.use("/", loginRouter);
 router.use("/info", checkAuthenticated, infoRouter);

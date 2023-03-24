@@ -8,32 +8,40 @@ const keys = {
   enviarMensaje: "enviarMensaje",
 };
 
-// Normalizr
-
-const schema = normalizr.schema;
-const user = new schema.Entity("author");
-const schemaMessages = new schema.Entity("messages", { author: user });
-
-// Funciones
-
-function denormalize(normalizedData) {
-  const data = normalizr.denormalize(
-    normalizedData.result,
-    [schemaMessages],
-    normalizedData.entities
-  );
-  const largoNormalizado = JSON.stringify(normalizedData).length;
-  const largoOriginal = JSON.stringify(data).length;
-  const compresion = Math.round((largoNormalizado / largoOriginal) * 100);
-  showCompresion(compresion);
-  return data;
+let ruta = "";
+if (route == "LOCAL") {
+  ruta = "http://localhost:8080/";
+} else if (route == "RAILWAY") {
+  ruta = "https://process-production.up.railway.app/";
 }
 
-function showCompresion(compresion) {
-  document.getElementById(
-    "compresion"
-  ).innerText = `(Compresión: ${compresion}%)`;
-}
+// // Normalizr
+
+// const schema = normalizr.schema;
+// const user = new schema.Entity("author");
+// const schemaMessages = new schema.Entity("messages", { author: user });
+
+// // Funciones
+
+// function denormalize(normalizedData) {
+//   const data = normalizr.denormalize(
+//     normalizedData.result,
+//     [schemaMessages],
+//     normalizedData.entities
+//   );
+//   const largoNormalizado = JSON.stringify(normalizedData).length;
+//   const largoOriginal = JSON.stringify(data).length;
+//   const compresion = Math.round((largoNormalizado / largoOriginal) * 100);
+//   showCompresion(compresion);
+//   console.log(data);
+//   return data;
+// }
+
+// function showCompresion(compresion) {
+//   document.getElementById(
+//     "compresion"
+//   ).innerText = `(Compresión: ${compresion}%)`;
+// }
 
 function enviarMensaje() {
   const fechaHora = new Date();
@@ -48,11 +56,23 @@ function enviarMensaje() {
       alias: document.getElementById("alias").value,
       avatar: document.getElementById("avatar").value,
     },
-    texto: document.getElementById("msj").value,
+    text: document.getElementById("msj").value,
     date: fecha + " " + hora,
   };
-  socket.emit(keys.enviarMensaje, mensaje);
-  document.getElementById("msj").value = "";
+  fetch(`${ruta}api/mensajes`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(mensaje),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      socket.emit(keys.enviarMensaje);
+      console.log(data);
+      return false;
+    })
+    .catch((error) => console.log(error));
   return false;
 }
 
@@ -93,15 +113,6 @@ function updateMensajes(msjs) {
 
 // WebSocket
 
-let ruta = "";
-if (route == "LOCAL") {
-  ruta = "http://localhost:8080/"
-} else if (route == "RAILWAY") {
-  ruta = "https://process-production.up.railway.app/"
-}
-
-
-
 socket.on(keys.nuevoProducto, () => {
   fetch(`${ruta}api/productos`)
     .then((res) => res.json())
@@ -110,9 +121,13 @@ socket.on(keys.nuevoProducto, () => {
     });
 });
 
-socket.on(keys.nuevoMensaje, (normalizedMessages) => {
-  const mensajes = denormalize(normalizedMessages);
-  updateMensajes({ msjs: mensajes });
+socket.on(keys.nuevoMensaje, () => {
+  fetch(`${ruta}api/mensajes`)
+    .then((res) => res.json())
+    .then((data) => {
+      // const messages = await denormalize(data);
+      updateMensajes({ msjs: data });
+    });
 });
 
 socket.on("error", ({ error, status }) => {
