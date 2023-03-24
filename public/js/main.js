@@ -69,7 +69,7 @@ function enviarMensaje() {
     .then((res) => res.json())
     .then((data) => {
       socket.emit(keys.enviarMensaje);
-      console.log(data);
+      document.getElementById("msj").value = "";
       return false;
     })
     .catch((error) => console.log(error));
