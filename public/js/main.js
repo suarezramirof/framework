@@ -15,33 +15,10 @@ if (route == "LOCAL") {
   ruta = "https://process-production.up.railway.app/";
 }
 
-// // Normalizr
+// Page load
 
-// const schema = normalizr.schema;
-// const user = new schema.Entity("author");
-// const schemaMessages = new schema.Entity("messages", { author: user });
-
-// // Funciones
-
-// function denormalize(normalizedData) {
-//   const data = normalizr.denormalize(
-//     normalizedData.result,
-//     [schemaMessages],
-//     normalizedData.entities
-//   );
-//   const largoNormalizado = JSON.stringify(normalizedData).length;
-//   const largoOriginal = JSON.stringify(data).length;
-//   const compresion = Math.round((largoNormalizado / largoOriginal) * 100);
-//   showCompresion(compresion);
-//   console.log(data);
-//   return data;
-// }
-
-// function showCompresion(compresion) {
-//   document.getElementById(
-//     "compresion"
-//   ).innerText = `(Compresión: ${compresion}%)`;
-// }
+displayMessages();
+displayProducts();
 
 function enviarMensaje() {
   const fechaHora = new Date();
@@ -59,20 +36,7 @@ function enviarMensaje() {
     text: document.getElementById("msj").value,
     date: fecha + " " + hora,
   };
-  fetch(`${ruta}api/mensajes`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(mensaje),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      socket.emit(keys.enviarMensaje);
-      document.getElementById("msj").value = "";
-      return false;
-    })
-    .catch((error) => console.log(error));
+  postmessage(mensaje);
   return false;
 }
 
@@ -92,10 +56,7 @@ function cargarProducto(e) {
     precio: parseFloat(document.getElementById("price").value),
     foto: document.getElementById("thumbnail").value,
   };
-  socket.emit(keys.cargarProducto, producto);
-  document.getElementById("title").value = "";
-  document.getElementById("price").value = "";
-  document.getElementById("thumbnail").value = "";
+  postproduct(producto);
   return false;
 }
 
@@ -111,25 +72,63 @@ function updateMensajes(msjs) {
     });
 }
 
-// WebSocket
+function displayMessages() {
+  fetch(`${ruta}api/mensajes`)
+    .then((res) => res.json())
+    .then((data) => {
+      updateMensajes({ msjs: data });
+    });
+}
 
-socket.on(keys.nuevoProducto, () => {
+function displayProducts() {
   fetch(`${ruta}api/productos`)
     .then((res) => res.json())
     .then((data) => {
       updateProductos({ items: data });
     });
-});
+}
 
-socket.on(keys.nuevoMensaje, () => {
-  fetch(`${ruta}api/mensajes`)
-    .then((res) => res.json())
-    .then((data) => {
-      // const messages = await denormalize(data);
-      updateMensajes({ msjs: data });
-    });
-});
+// WebSocket
+
+socket.on(keys.nuevoProducto, () => displayProducts());
+socket.on(keys.nuevoMensaje, () => displayMessages());
 
 socket.on("error", ({ error, status }) => {
   alert(`Error: ${error}. Código: ${status}`);
 });
+
+// Helper functions
+
+function postmessage(msg) {
+  fetch(`${ruta}api/mensajes`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(msg),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      socket.emit(keys.enviarMensaje);
+      document.getElementById("msj").value = "";
+    })
+    .catch((error) => console.log(error));
+}
+
+function postproduct(product) {
+  fetch(`${ruta}api/productos`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(product),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      socket.emit(keys.cargarProducto);
+      document.getElementById("title").value = "";
+      document.getElementById("price").value = "";
+      document.getElementById("thumbnail").value = "";
+    })
+    .catch((error) => console.log(error));
+}
