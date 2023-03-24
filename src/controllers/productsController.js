@@ -28,13 +28,6 @@ class ProductsController {
       .then(() => res.json("Éxito"))
       .catch(() => res.send("Error"));
   };
-
-  addProductSocket = (prod, io) => {
-    this.products
-      .add(prod)
-      .then(() => io.sockets.emit(keys.nuevoProducto))
-      .catch(() => console.log(error));
-  };
 }
 
 const productsController = new ProductsController(products);
