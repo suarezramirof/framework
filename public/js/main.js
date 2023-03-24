@@ -12,7 +12,7 @@ let ruta = "";
 if (route == "LOCAL") {
   ruta = "http://localhost:8080/";
 } else if (route == "RAILWAY") {
-  ruta = "https://process-production.up.railway.app/";
+  ruta = "https://products-and-messages.up.railway.app/home";
 }
 
 // Page load
