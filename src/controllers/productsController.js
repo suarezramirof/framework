@@ -1,35 +1,29 @@
-import { products } from "../daos/index.js";
-import keys from "../sockets/ws_keys.js";
+import ProductsService from "../services/productsService.js";
 import pinoLogger from "../../logger.js";
 const logger = pinoLogger.buildConsoleLogger();
 const errorLogger = pinoLogger.buildErrorLogger();
-class ProductsController {
-  constructor(products) {
-    this.products = products;
-  }
+const productsService = new ProductsService();
+const productsController = {}
 
-  getProducts = (_req, res) => {
-    this.products
-      .getAll()
+  productsController.getProducts = (_req, res) => {
+    productsService
+      .getProducts()
       .then((data) => {
         return res.json(data);
       })
       .catch((error) => res.json(error));
   };
 
-  addProduct = (req, res) => {
+  productsController.addProduct = (req, res) => {
     if (!req.body.nombre || !req.body.precio || !req.body.foto) {
       logger.error("Error al agregar producto");
       errorLogger.error("Error al agregar producto");
       return res.sendStatus(400);
     }
-    this.products
-      .add(req.body)
+    productsService
+      .addProduct(req.body)
       .then(() => res.json("Éxito"))
       .catch(() => res.send("Error"));
   };
-}
-
-const productsController = new ProductsController(products);
 
 export default productsController;
