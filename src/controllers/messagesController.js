@@ -1,32 +1,27 @@
-import { messages } from "../daos/index.js";
+import MessagesService from "../services/messagesService.js";
 import keys from "../sockets/ws_keys.js";
 
-class MessagesController {
-  constructor(messages) {
-    this.messages = messages;
-  };
+const messagesService = new MessagesService();
+const messagesController = {};
 
-  viewMessages = async (socket) => {
-    socket.emit(keys.nuevoMensaje);
-  };
+messagesController.viewMessages = async (socket) => {
+  socket.emit(keys.nuevoMensaje);
+};
 
-  getMessages = async (_req, res) => {
-    const messages = await this.messages.getAll();
-    res.send(messages);
-  };
+messagesController.getMessages = async (_req, res) => {
+  const messages = await messagesService.getMessages();
+  res.send(messages);
+};
 
-  sendMessage = async (req, res) => {
-    const { author, text, date } = req.body;
-    const msj = { author, text, date };
-    this.messages
-      .add(msj)
-      .then(() => res.json("Mensaje enviado con éxito"))
-      .catch((error) => {
-        console.log("Error:", error);
-        res.sendStatus(500);
-      });
-  };
-}
+messagesController.sendMessage = async (req, res) => {
+  const { author, text, date } = req.body;
+  const message = { author, text, date };
+  messagesService
+    .addMessage(message)
+    .then(() => {
+      res.json("Mensaje enviado con éxito");
+    })
+    .catch((error) => console.log(error));
+};
 
-const messagesController = new MessagesController(messages);
 export default messagesController;

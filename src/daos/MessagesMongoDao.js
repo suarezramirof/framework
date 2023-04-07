@@ -1,6 +1,6 @@
-import MongoContainer from "../containers/MongoContainer.js";
+import MongoDao from "./MongoDao.js";
 import MessagesSchema from "../models/MessagesSchema.js";
-class MessagesMongoDao extends MongoContainer {
+class MessagesMongoDao extends MongoDao {
     constructor() {
         super("messages", MessagesSchema)
     }
