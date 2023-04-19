@@ -1,8 +1,8 @@
-import { MessagesDao } from "../daos/index.js";
+import { MessagesDaoFactory } from "../daos/index.js";
 
 class MessagesService {
   constructor() {
-    this.messagesDao = new MessagesDao();
+    this.messagesDao = MessagesDaoFactory.getDao();
   }
 
   async getMessages() {

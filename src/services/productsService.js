@@ -1,7 +1,7 @@
-import { ProductsDao } from "../daos/index.js";
+import { ProductsDaoFactory } from "../daos/index.js";
 class ProductsService {
   constructor() {
-    this.productsDao = new ProductsDao();
+    this.productsDao = ProductsDaoFactory.getDao();
   }
 
   async getProducts() {
