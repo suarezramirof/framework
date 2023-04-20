@@ -41,7 +41,7 @@ class MongoDao {
   }
 
   async deleteById(id) {
-    return await this.items.deleteById(id);
+    return await this.items.findByIdAndDelete(id);
   }
 }
 

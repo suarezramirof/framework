@@ -20,4 +20,8 @@ export default class ProductsRepo {
     const productDto = new ProductsDto(product);
     return await this.dao.add(productDto);
   }
+
+  async delete(id) {
+    return await this.dao.deleteById(id);
+  }
 }

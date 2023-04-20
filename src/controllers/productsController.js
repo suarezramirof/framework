@@ -26,4 +26,11 @@ const productsController = {}
       .catch(() => res.send("Error"));
   };
 
+  productsController.deleteProduct = (req, res) => {
+    productsService
+      .deleteProduct(req.params.id)
+      .then(() => res.json("Éxito"))
+      .catch(() => res.send("Error"));
+  }
+
 export default productsController;

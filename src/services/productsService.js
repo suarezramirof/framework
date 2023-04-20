@@ -20,6 +20,10 @@ class ProductsService {
     const newProduct = await this.productsRepo.add(product);
     return newProduct;
   }
+
+  async deleteProduct(id) {
+    return await this.productsRepo.delete(id);
+  }
 }
 
 export default ProductsService;
