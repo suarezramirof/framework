@@ -1,5 +1,3 @@
-import ProductsMongoDao from "./ProductsMongoDao.js";
-import MessagesMongoDao from "./MessagesMongoDao.js";
 import { DATABASE } from "../config.js";
 
 let productsInstance = null;
@@ -7,9 +5,22 @@ let messagesInstance = null;
 
 export class ProductsDaoFactory {
   constructor(db) {
-    if (db === "mongo") this.productsDao = ProductsMongoDao.getInstance();
-    // No se usan otras bases de datos en esta instancia
-    else throw new Error("No such database");
+    if (db === "MONGODB") {
+      import("./mongodb/ProductsMongoDao.js").then((module) => {
+        this.productsDao = module.default.getInstance();
+      });
+    } else if (db === "FILESYSTEM") {
+      import("./filesystem/ProductsFileSystemDao.js").then((module) => {
+        this.productsDao = module.default.getInstance();
+      });
+    } else if (db === "MEMORY") {
+      import("./memory/ProductsMemoryDao.js").then((module) => {
+        this.productsDao = module.default.getInstance();
+      });
+    }
+    else {
+      throw new Error("No such database");
+    }
   }
 
   static getDao() {
@@ -22,8 +33,19 @@ export class ProductsDaoFactory {
 
 export class MessagesDaoFactory {
   constructor(db) {
-    if (db === "mongo") this.messagesDao = new MessagesMongoDao();
-    // No se usan otras bases de datos en esta instancia
+    if (db === "MONGODB") {
+      import("./mongodb/MessagesMongoDao.js").then((module) => {
+        this.messagesDao = module.default.getInstance();
+      });
+    } else if (db === "FILESYSTEM") {
+      import("./filesystem/MessagesFileSystemDao.js").then((module) => {
+        this.messagesDao = module.default.getInstance();
+      });
+    } else if (db === "MEMORY") {
+      import("./memory/MessagesMemoryDao.js").then((module) => {
+        this.messagesDao = module.default.getInstance();
+      });
+    }
     else throw new Error("No such database");
   }
 

@@ -1,6 +1,6 @@
 import MongoDao from "./MongoDao.js";
-import MessagesSchema from "../models/MessagesSchema.js";
-import MessagesDto from "./dto/MessagesDto.js";
+import MessagesSchema from "../../models/MessagesSchema.js";
+import MessagesDto from "../dto/MessagesDto.js";
 
 let instance = null;
 export default class MessagesMongoDao extends MongoDao {

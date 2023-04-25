@@ -1,5 +1,5 @@
 import { Strategy as LocalStrategy } from "passport-local";
-import UsersMongoDao from "../daos/UsersMongoDao.js";
+import UsersMongoDao from "../daos/mongodb/UsersMongoDao.js";
 import { isValidPassword, createHash } from "./bCrypt.js";
 
 const UsersObj = new UsersMongoDao();
