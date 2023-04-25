@@ -9,7 +9,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import * as socket from "./src/sockets/socket_io.js";
 import initializePassport from "./src/auth/passport-config.js";
-import { PORT, MODE } from "./src/config.js";
+import { PORT, MODE, NODE_ENV } from "./src/config.js";
 import cluster from "cluster";
 import os from "os";
 import pinoLogger from "./logger.js";
@@ -35,7 +35,9 @@ if (MODE === "CLUSTER" && cluster.isPrimary) {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(express.static("./public"));
-  app.use(cors());
+  if (NODE_ENV === "development") {
+    app.use(cors());
+  }
 
   //Engine
 

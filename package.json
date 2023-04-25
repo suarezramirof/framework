@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "dev": "npx nodemon server.js --ext js"
+    "watch": "nodemon server.js",
+    "dev": "set NODE_ENV=development&& node server.js",
+    "prod": "set NODE_ENV=production&& node server.js"
   },
   "keywords": [],
   "author": "",
