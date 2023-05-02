@@ -26,13 +26,15 @@ const authenticateLogin = async (username, password, done) => {
       console.log("User not found");
       return done(null, false);
     }
-    if (isValidPassword(user, password)) {
-      console.log("Login successful");
-      return done(null, user);
-    } else {
-      console.log("Wrong password");
-      return done(null, false);
-    }
+    isValidPassword(user, password).then((isValid) => {
+      if (isValid) {
+        console.log("Login successful");
+        return done(null, user);
+      } else {
+        console.log("Wrong password");
+        return done(null, false);
+      }
+    });
   });
 };
 
