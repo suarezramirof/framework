@@ -9,10 +9,14 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import * as socket from "./src/sockets/socket_io.js";
 import initializePassport from "./src/auth/passport-config.js";
-import { PORT, MODE, NODE_ENV } from "./src/config.js";
+import config from "./src/config.js";
 import cluster from "cluster";
 import os from "os";
-import pinoLogger from "./logger.js";
+import pinoLogger from "./src/utils/logger.js";
+
+
+// Config
+const {PORT, MODE, NODE_ENV} = config;
 
 // Primary
 
@@ -29,6 +33,7 @@ if (MODE === "CLUSTER" && cluster.isPrimary) {
     cluster.fork();
   });
 } else {
+  
   // Express
 
   const app = express();
