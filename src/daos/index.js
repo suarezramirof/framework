@@ -1,24 +1,22 @@
-import { DATABASE } from "../config.js";
+import config from "../config.js";
+import ProductsMemoryDao from "./memory/ProductsMemoryDao.js";
+import ProductsMongoDao from "./mongodb/ProductsMongoDao.js";
+import MessagesMemoryDao from "./memory/MessagesMemoryDao.js";
+import MessagesMongoDao from "./mongodb/MessagesMongoDao.js";
+const DATABASE = config.DATABASE;
 
 let productsInstance = null;
 let messagesInstance = null;
 
 export class ProductsDaoFactory {
   constructor(db) {
-    if (db === "MONGODB") {
-      import("./mongodb/ProductsMongoDao.js").then((module) => {
-        this.productsDao = module.default.getInstance();
-      });
-    } else if (db === "FILESYSTEM") {
-      import("./filesystem/ProductsFileSystemDao.js").then((module) => {
-        this.productsDao = module.default.getInstance();
-      });
-    } else if (db === "MEMORY") {
-      import("./memory/ProductsMemoryDao.js").then((module) => {
-        this.productsDao = module.default.getInstance();
-      });
-    }
-    else {
+    if (db == "MONGODB") {
+      this.productsDao = ProductsMongoDao.getInstance();
+    } else if (db == "FILESYSTEM") {
+      this.productsDao = ProductsFileSystemDao.getInstance();
+    } else if (db == "MEMORY") {
+      this.productsDao = ProductsMemoryDao.getInstance();
+    } else {
       throw new Error("No such database");
     }
   }
@@ -33,20 +31,15 @@ export class ProductsDaoFactory {
 
 export class MessagesDaoFactory {
   constructor(db) {
-    if (db === "MONGODB") {
-      import("./mongodb/MessagesMongoDao.js").then((module) => {
-        this.messagesDao = module.default.getInstance();
-      });
-    } else if (db === "FILESYSTEM") {
-      import("./filesystem/MessagesFileSystemDao.js").then((module) => {
-        this.messagesDao = module.default.getInstance();
-      });
-    } else if (db === "MEMORY") {
-      import("./memory/MessagesMemoryDao.js").then((module) => {
-        this.messagesDao = module.default.getInstance();
-      });
+    if (db == "MONGODB") {
+      this.messagesDao = MessagesMongoDao.getInstance();
+    } else if (db == "FILESYSTEM") {
+      this.messagesDao = MessagesFileSystemDao.getInstance();
+    } else if (db == "MEMORY") {
+      this.messagesDao = MessagesMemoryDao.getInstance();
+    } else {
+      throw new Error("No such database");
     }
-    else throw new Error("No such database");
   }
 
   static getDao() {
