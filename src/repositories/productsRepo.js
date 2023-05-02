@@ -1,6 +1,5 @@
 import { ProductsDaoFactory } from "../daos/index.js";
-import Producto from "./classes/products.js";
-import ProductsDto from "../daos/dto/ProductsDto.js";
+import Product from "./classes/products.js";
 export default class ProductsRepo {
   constructor() {
     this.dao = ProductsDaoFactory.getDao();
@@ -8,20 +7,21 @@ export default class ProductsRepo {
 
   async getAll() {
     const products = await this.dao.getAll();
-    return products.map((p) => new Producto(p));
+    return products.map((p) => new Product(p));
   }
 
   async get(id) {
     const product = await this.dao.get(id);
-    return new Producto(product);
+    return new Product(product);
   }
 
   async add(product) {
-    const productDto = new ProductsDto(product);
-    return await this.dao.add(productDto);
+    const addedProduct = await this.dao.add(product);
+    return new Product(addedProduct);
   }
 
   async delete(id) {
-    return await this.dao.deleteById(id);
+    const deletedMessage = await this.dao.deleteById(id);
+    return new Product(deletedMessage);
   }
 }
