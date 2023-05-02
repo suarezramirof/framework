@@ -1,21 +1,23 @@
 import pino from "pino";
 
-function buildConsoleLogger() {
+const PinoLogger = {
+  buildConsoleLogger: () => {
     const consoleLogger = pino();
     consoleLogger.level = "info";
     return consoleLogger;
-}
+  },
 
-function buildWarnLogger() {
+  buildWarnLogger: () => {
     const warnLogger = pino("warn.log");
     warnLogger.level = "warn";
     return warnLogger;
-}
+  },
 
-function buildErrorLogger() {
+  buildErrorLogger: () => {
     const errorLogger = pino("error.log");
     errorLogger.level = "error";
     return errorLogger;
-}
+  },
+};
 
-export default {buildConsoleLogger, buildWarnLogger, buildErrorLogger};
+export default PinoLogger;
