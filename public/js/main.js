@@ -21,9 +21,6 @@ displayMessages();
 displayProducts();
 
 function enviarMensaje() {
-  const fechaHora = new Date();
-  const fecha = fechaHora.toLocaleDateString();
-  const hora = fechaHora.toLocaleTimeString();
   const mensaje = {
     author: {
       id: document.getElementById("mail").value,
@@ -33,8 +30,7 @@ function enviarMensaje() {
       alias: document.getElementById("alias").value,
       avatar: document.getElementById("avatar").value,
     },
-    text: document.getElementById("msj").value,
-    date: fecha + " " + hora,
+    text: document.getElementById("msj").value
   };
   postmessage(mensaje);
   return false;

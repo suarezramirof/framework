@@ -1,8 +1,8 @@
 export default class MessagesDto {
-  constructor(message) {
-    this.id = message._id;
+  constructor(id, message, msgTime) {
+    this._id = id;
     this.author = message.author;
     this.text = message.text;
-    this.date = message.date;
+    this.date = msgTime;
   }
 }
