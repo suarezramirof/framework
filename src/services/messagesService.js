@@ -1,12 +1,12 @@
-import { MessagesDaoFactory } from "../daos/index.js";
+import MessagesRepo from "../repositories/messagesRepo.js";
 
 class MessagesService {
   constructor() {
-    this.messagesDao = MessagesDaoFactory.getDao();
+    this.messagesRepo = new MessagesRepo();
   }
 
   async getMessages() {
-    return await this.messagesDao.getAll();
+    return await this.messagesRepo.getAll();
   }
 
   async addMessage(message) {
@@ -20,7 +20,7 @@ class MessagesService {
     ) {
       throw new Error("Missing message data");
     }
-    const newMessage = await this.messagesDao.add(message);
+    const newMessage = await this.messagesRepo.add(message);
     return newMessage;
   }
 }
