@@ -4,14 +4,12 @@ import { cpus } from "os";
 import compression from "compression";
 export const infoRouter = Router();
 export const randomNumberRouter = Router();
-import { CONSOLE } from "../config.js";
 
 infoRouter.get("/", showInfo);
 infoRouter.get("/gzip", compression(), showInfo);
 
 function showInfo(_req, res) {
   const info = getInfo();
-  if (CONSOLE) console.log(info);
   return res.render("pages/info", info);
 }
 
