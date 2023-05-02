@@ -1,7 +1,7 @@
 import ProductsService from "../services/productsService.js";
-import pinoLogger from "../../logger.js";
-const logger = pinoLogger.buildConsoleLogger();
-const errorLogger = pinoLogger.buildErrorLogger();
+import PinoLogger from "../utils/logger.js";
+const logger = PinoLogger.buildConsoleLogger();
+const errorLogger = PinoLogger.buildErrorLogger();
 const productsService = new ProductsService();
 const productsController = {}
 

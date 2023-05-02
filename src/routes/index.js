@@ -3,7 +3,7 @@ import loginRouter, { checkAuthenticated } from "./loginRouter.js";
 import productsRouter from "./productsRouter.js";
 import messageRouter from "./messageRouter.js";
 import { infoRouter, randomNumberRouter } from "./miscRoutes.js";
-import pinoLogger from "../../logger.js";
+import pinoLogger from "../utils/logger.js";
 const router = Router();
 router.use("/api", checkAuthenticated, productsRouter);
 router.use("/api", checkAuthenticated, messageRouter);
