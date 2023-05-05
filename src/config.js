@@ -14,7 +14,7 @@ const options = {
   alias: {
     p: "PORT",
     m: "MODE",
-    db: "DATABASE",
+    d: "DATABASE",
   },
   default: {
     PORT: process.env.PORT || 8080,
