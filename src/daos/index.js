@@ -3,6 +3,8 @@ import ProductsMemoryDao from "./memory/ProductsMemoryDao.js";
 import ProductsMongoDao from "./mongodb/ProductsMongoDao.js";
 import MessagesMemoryDao from "./memory/MessagesMemoryDao.js";
 import MessagesMongoDao from "./mongodb/MessagesMongoDao.js";
+import ProductsFileSystemDao from "./filesystem/ProductsFileSystemDao.js";
+import MessagesFileSystemDao from "./filesystem/MessagesFileSystemDao.js";
 const DATABASE = config.DATABASE;
 
 let productsInstance = null;
