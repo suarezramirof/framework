@@ -3,9 +3,7 @@ export default class Messages {
     this.id = message._id;
     this.author = message.author;
     this.text = message.text;
-    this.date =
-      message.date.toLocaleDateString() +
-      " " +
-      message.date.toLocaleTimeString();
+    const date = new Date(message.date);
+    this.date = date.toLocaleDateString() + " " + date.toLocaleTimeString();
   }
 }
