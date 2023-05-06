@@ -1,59 +1,27 @@
 import { Router } from "express";
 import passport from "passport";
-
-
-import config from "../config.js";
-const {HOST} = config;
-
 const loginRouter = Router();
-
-loginRouter.get("/", (_req, res) => {
-  res.redirect("/home");
-});
-
-loginRouter.get("/register", checkNotAuthenticated, (_req, res) => {
-  res.render("pages/register");
-});
 
 loginRouter.post(
   "/register",
   checkNotAuthenticated,
   passport.authenticate("register", {
-    failureRedirect: "/registerfailure",
-    successRedirect: "/login",
     session: false,
-  })
+  }),
+  (_req, res) => {
+    res.json("Succesful registration");
+  }
 );
-
-loginRouter.get("/registerfailure", checkNotAuthenticated, (_req, res) => {
-  res.render("pages/registerfailure");
-});
-
-loginRouter.get("/login", checkNotAuthenticated, (_req, res) => {
-  res.render("pages/login.hbs");
-});
 
 loginRouter.post(
   "/login",
   checkNotAuthenticated,
-  passport.authenticate("login", {
-    successRedirect: "/home",
-    failureRedirect: "/loginfailure",
-  })
+  passport.authenticate("login"),
+  (req, res) => {
+    if (req.isAuthenticated()) res.json("Succesful login");
+    else res.json("Login failure");
+  }
 );
-
-loginRouter.get("/loginfailure", checkNotAuthenticated, (_req, res) => {
-  res.render("pages/loginfailure");
-});
-
-loginRouter.get("/home", checkAuthenticated, (req, res) => {
-  req.session.counter++;
-  const route = HOST == "localhost" ? true : false;
-  res.render("pages/home", {
-    user: req.session.passport.user.username,
-    ruta: route,
-  });
-});
 
 loginRouter.get("/logout", checkAuthenticated, (req, res) => {
   try {
@@ -61,7 +29,7 @@ loginRouter.get("/logout", checkAuthenticated, (req, res) => {
       ? req.session.passport.user.username
       : "";
     req.session.destroy();
-    res.render("pages/logout", { mensaje: `Hasta luego ${name}` });
+    res.json({ event: "logout", username: name });
   } catch (error) {
     console.log(error);
   }
@@ -71,13 +39,13 @@ export function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   } else {
-    res.redirect("/login");
+    res.json("Not authenticated");
   }
 }
 
 function checkNotAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
-    res.redirect("/");
+    res.json("Already authenticated");
   } else {
     next();
   }
