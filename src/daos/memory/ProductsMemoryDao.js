@@ -16,13 +16,13 @@ export default class ProductsMemoryDao extends MemoryDao {
         const addTime = Date.now();
         const productDto = new ProductsDto(id, product, addTime);
         this.items.push(productDto);
-        logger.info(`Product ${product.nombre} added`);
+        logger.info(`Product ${productDto.nombre} added`);
         return productDto;
       } else {
         throw new Error("Must provide a product");
       }
     } catch (error) {
-      errorLogger.error("Error adding product: ", error);
+      errorLogger.error("Error adding product: " + error);
     }
   }
 
