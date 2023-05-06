@@ -14,9 +14,8 @@ import cluster from "cluster";
 import os from "os";
 import pinoLogger from "./src/utils/logger.js";
 
-
 // Config
-const {PORT, MODE, NODE_ENV} = config;
+const { PORT, MODE, NODE_ENV } = config;
 
 // Primary
 
@@ -33,7 +32,6 @@ if (MODE === "CLUSTER" && cluster.isPrimary) {
     cluster.fork();
   });
 } else {
-  
   // Express
 
   const app = express();
@@ -41,14 +39,10 @@ if (MODE === "CLUSTER" && cluster.isPrimary) {
   app.use(express.urlencoded({ extended: true }));
   app.use(express.static("./public"));
   if (NODE_ENV === "development") {
-    app.use(cors());
+    console.log("Using cors");
+    app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
   }
 
-  //Engine
-
-  app.engine("hbs", hbs.engine);
-  app.set("views", "public/views");
-  app.set("view engine", "hbs");
 
   // Session
 
@@ -64,9 +58,11 @@ if (MODE === "CLUSTER" && cluster.isPrimary) {
   // Logs
 
   const logger = pinoLogger.buildConsoleLogger();
-  
+
   app.use("/", (req, res, next) => {
-    logger.info(`Solicitud con ruta < ${req.originalUrl} > y metodo ${req.method} recibida.`);
+    logger.info(
+      `Solicitud con ruta < ${req.originalUrl} > y metodo ${req.method} recibida.`
+    );
     next();
   });
 
