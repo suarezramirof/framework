@@ -1,5 +1,5 @@
-import MongoDao from "./MongoDao.js";
-import ProductsSchema from "../models/ProductsSchema.js";
+import MongoDao from "./mongoDao.js";
+import ProductsSchema from "../../models/mongoose/productsSchema.js";
 
 let instance = null;
 export default class ProductsMongoDao extends MongoDao {

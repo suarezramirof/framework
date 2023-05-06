@@ -1,6 +1,6 @@
-import MongoDao from "./MongoDao.js";
-import MessagesSchema from "../../models/MessagesSchema.js";
-import MessagesDto from "../dto/MessagesDto.js";
+import MongoDao from "./mongoDao.js";
+import MessagesSchema from "../../models/mongoose/messagesSchema.js";
+import MessagesDto from "../dto/messagesDto.js";
 
 let instance = null;
 export default class MessagesMongoDao extends MongoDao {
@@ -14,16 +14,10 @@ export default class MessagesMongoDao extends MongoDao {
     return instance;
   }
 
-  async get(id) {
-    return await super.get(id).then((message) => new MessagesDto(message))
-  }
-
-  async getAll() {
-    return await super.getAll().then((messages) => messages.map((message) => new MessagesDto(message)))
-  }
-
   async add(message) {
-    const newMessage = new MessagesDto(message);
-    return await super.add(newMessage);
+    const msgTime = new Date();
+    const newMessage = new MessagesDto(null, message, msgTime);
+    await this.items.create(newMessage);
+    return newMessage;
   }
 }

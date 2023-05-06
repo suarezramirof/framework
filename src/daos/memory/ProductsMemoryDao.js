@@ -1,5 +1,5 @@
-import MemoryDao from "./MemoryDao.js";
-import ProductsDto from "../dto/ProductsDto.js";
+import MemoryDao from "./memoryDao.js";
+import ProductsDto from "../dto/productsDto.js";
 import PinoLogger from "../../utils/logger.js";
 const logger = PinoLogger.buildConsoleLogger();
 const errorLogger = PinoLogger.buildErrorLogger();
@@ -13,7 +13,7 @@ export default class ProductsMemoryDao extends MemoryDao {
     try {
       if (product) {
         const id = this.getNext_Id(this.items);
-        const addTime = new Date();
+        const addTime = Date.now();
         const productDto = new ProductsDto(id, product, addTime);
         this.items.push(productDto);
         logger.info(`Product ${product.nombre} added`);

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { MongoAtlasUri } from "../config.js";
+import { MongoAtlasUri } from "../../config.js";
 mongoose.set("strictQuery", true);
 try {
   mongoose.connect(
@@ -14,7 +14,7 @@ try {
   console.log("Could not connect. Error: " + error);
 }
 
-class MongoDao {
+export default class MongoDao {
   constructor(type, schema) {
     this.items = mongoose.model(type, schema);
   }
@@ -40,9 +40,13 @@ class MongoDao {
     return updatedProduct;
   }
 
+  async update(item) {
+    return await this.items.findByIdAndUpdate(item._id, item, {
+      new: true,
+    });
+  }
+
   async deleteById(id) {
     return await this.items.findByIdAndDelete(id);
   }
 }
-
-export default MongoDao;

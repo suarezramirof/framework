@@ -1,5 +1,5 @@
-import MemoryDao from "./MemoryDao.js";
-import MessagesDto from "../dto/MessagesDto.js";
+import MemoryDao from "./memoryDao.js";
+import MessagesDto from "../dto/messagesDto.js";
 
 import PinoLogger from "../../utils/logger.js";
 const logger = PinoLogger.buildConsoleLogger();
@@ -15,7 +15,7 @@ export default class MessagesMemoryDao extends MemoryDao {
     try {
       if (message) {
         const id = this.getNext_Id(this.items);
-        const msgTime = new Date();
+        const msgTime = Date.now();
         const messageDto = new MessagesDto(id, message, msgTime);
         this.items.push(messageDto);
         logger.info(`Message from ${message.author.id} added`);

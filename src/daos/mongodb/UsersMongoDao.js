@@ -1,5 +1,5 @@
-import MongoDao from "./MongoDao.js";
-import UsersSchema from "../../models/UsersSchema.js";
+import MongoDao from "./mongoDao.js";
+import UsersSchema from "../../models/mongoose/usersSchema.js";
 
 class UsersMongoDao extends MongoDao {
   constructor() {

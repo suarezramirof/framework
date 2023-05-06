@@ -1,5 +1,5 @@
-import FileSystemDao from "./FileSystemDao.js";
-import MessagesDto from "../dto/MessagesDto.js";
+import FileSystemDao from "./fileSystemDao.js";
+import MessagesDto from "../dto/messagesDto.js";
 import PinoLogger from "../../utils/logger.js";
 import fs from "fs/promises";
 
