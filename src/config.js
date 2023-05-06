@@ -9,7 +9,7 @@ const PASSWORD = process.env.PASSWORD;
 
 export const MongoAtlasUri = `mongodb+srv://${USER}:${PASSWORD}@cluster0.zuesfin.mongodb.net/prueba`;
 export const SessionTimeout = 600000;
-
+const NODE_ENV = process.env.NODE_ENV;
 const options = {
   alias: {
     p: "PORT",
@@ -27,4 +27,4 @@ const commandLineArgs = process.argv.slice(2);
 
 const { PORT, MODE, DATABASE } = parseArgs(commandLineArgs, options);
 
-export default { PORT, MODE, DATABASE, HOST: process.env.HOST || "localhost" };
+export default { PORT, MODE, DATABASE, HOST: process.env.HOST || "localhost", NODE_ENV };
