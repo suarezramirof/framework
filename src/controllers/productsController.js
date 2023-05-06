@@ -20,7 +20,17 @@ productsController.addProduct = (req, res) => {
     .then(() => res.json("Éxito"))
     .catch((error) => {
       errorLogger.error(error);
-      res.status(error.code).send(error.message);
+      res.status(error.code ? error.code : 500).send(error.message);
+    });
+};
+
+productsController.updateProduct = (req, res) => {
+  productsService
+    .updateProduct(req.params.id, req.body)
+    .then(() => res.json("Éxito"))
+    .catch((error) => {
+      errorLogger.error(error);
+      res.status(error.code ? error.code : 500).send(error.message);
     });
 };
 

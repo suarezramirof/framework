@@ -20,6 +20,11 @@ class ProductsService {
     return newProduct;
   }
 
+  async updateProduct(id, product) {
+    ProductsService.isValidProduct(product, false);
+    return await this.productsRepo.update(id, product);
+  }
+
   async deleteProduct(id) {
     return await this.productsRepo.delete(id);
   }
