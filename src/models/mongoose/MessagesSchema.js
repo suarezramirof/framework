@@ -10,7 +10,7 @@ const MessagesSchema = new mongoose.Schema({
     avatar: {type: String, required: false},
   },
   text: {type: String, required: true},
-  date: {type: String, required: true}
+  date: {type: Date, required: true}
 });
 
 export default MessagesSchema;
