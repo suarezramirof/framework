@@ -15,9 +15,17 @@ export default class MessagesMongoDao extends MongoDao {
   }
 
   async add(message) {
-    const msgTime = new Date();
-    const newMessage = new MessagesDto(null, message, msgTime);
-    await this.items.create(newMessage);
-    return newMessage;
+    try {
+      if (message) {
+        const msgTime = Date.now();
+        const newMessage = new MessagesDto(undefined, message, msgTime);
+        const {_id} = await this.items.create(newMessage);
+        newMessage._id = _id;
+        return newMessage;
+      }
+      throw new Error("Message is undefined");
+    } catch(error) {
+      throw error;
+    }
   }
 }
