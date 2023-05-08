@@ -8,7 +8,8 @@
     "start": "node server.js",
     "watch": "nodemon server.js",
     "dev": "set NODE_ENV=development&& node server.js",
-    "prod": "set NODE_ENV=production&& node server.js"
+    "prod": "set NODE_ENV=production&& node server.js",
+    "test": "mocha test/apirestfull.test.js"
   },
   "keywords": [],
   "author": "",
@@ -32,5 +33,11 @@
     "passport-local": "^1.0.0",
     "pino": "^8.11.0",
     "socket.io": "^4.5.4"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3"
   }
 }
