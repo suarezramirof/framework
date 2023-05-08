@@ -43,15 +43,17 @@ if (MODE === "CLUSTER" && cluster.isPrimary) {
   }
 
   // Session
-
-  app.use(cookieParser());
-  app.use(sessionMiddleware);
+  if (NODE_ENV != "development") {
+    app.use(cookieParser());
+    app.use(sessionMiddleware);
+  }
 
   // Passport
-
-  app.use(passport.initialize());
-  app.use(passport.session());
-  initializePassport(passport);
+  if (NODE_ENV != "development") {
+    app.use(passport.initialize());
+    app.use(passport.session());
+    initializePassport(passport);
+  }
 
   // Logs
 
