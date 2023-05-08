@@ -17,7 +17,7 @@ productsController.getProducts = (_req, res) => {
 productsController.addProduct = (req, res) => {
   productsService
     .addProduct(req.body)
-    .then(() => res.json("Éxito"))
+    .then((response) => res.status(200).json(response))
     .catch((error) => {
       errorLogger.error(error);
       res.status(error.code ? error.code : 500).send(error.message);
@@ -27,7 +27,7 @@ productsController.addProduct = (req, res) => {
 productsController.updateProduct = (req, res) => {
   productsService
     .updateProduct(req.params.id, req.body)
-    .then(() => res.json("Éxito"))
+    .then((response) => res.json(response))
     .catch((error) => {
       errorLogger.error(error);
       res.status(error.code ? error.code : 500).send(error.message);
@@ -37,8 +37,11 @@ productsController.updateProduct = (req, res) => {
 productsController.deleteProduct = (req, res) => {
   productsService
     .deleteProduct(req.params.id)
-    .then(() => res.json("Éxito"))
-    .catch(() => res.send("Error"));
+    .then((response) => res.json(response))
+    .catch((error) => {
+      errorLogger.error(error);
+      res.status(error.code ? error.code : 500).send(error.message);
+    });
 };
 
 export default productsController;
