@@ -23,6 +23,9 @@ class MessagesService {
     const newMessage = await this.messagesRepo.add(message);
     return newMessage;
   }
-}
 
+  async deleteMessage(id) {
+    return await this.messagesRepo.delete(id);
+  }
+}
 export default MessagesService;
