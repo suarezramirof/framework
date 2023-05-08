@@ -1,5 +1,4 @@
 import router from "./src/routes/index.js";
-import hbs from "./src/engines/handlebars.js";
 import cors from "cors";
 import express from "express";
 import cookieParser from "cookie-parser";
@@ -42,7 +41,6 @@ if (MODE === "CLUSTER" && cluster.isPrimary) {
     console.log("Using cors");
     app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
   }
-
 
   // Session
 
