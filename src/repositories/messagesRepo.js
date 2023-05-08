@@ -22,7 +22,7 @@ export default class MessagesRepo {
   }
 
   async delete(id) {
-    const deletedMessage = await this.messagesDao.deleteById(id);
+    const deletedMessage = await this.dao.deleteById(id);
     return new Messages(deletedMessage);
   }
 }
