@@ -21,13 +21,14 @@ export default class ProductsRepo {
   }
 
   async update(id, product) {
-    product._id = id;
-    const updatedProduct = await this.dao.update(product);
+    const props = product;
+    props._id = id;
+    const updatedProduct = await this.dao.update(props);
     return new Product(updatedProduct);
   }
 
   async delete(id) {
-    const deletedMessage = await this.dao.deleteById(id);
-    return new Product(deletedMessage);
+    const deletedProduct = await this.dao.deleteById(id);
+    return new Product(deletedProduct);
   }
 }
