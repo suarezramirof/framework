@@ -28,25 +28,6 @@ export default class MessagesMemoryDao extends MemoryDao {
     }
   }
 
-  update(item) {
-    try {
-      if (item) {
-        const index = this.getIndex(item.id, this.items);
-        if (index >= 0) {
-          const updatedItem = new MessagesDto(item);
-          this.items[index] = updatedItem;
-          return updatedItem;
-        } else {
-          throw new Error("Message not found");
-        }
-      } else {
-        throw new Error("Must provide a message");
-      }
-    } catch (error) {
-      errorLogger.error("Error updating message: ", error);
-    }
-  }
-
   static getInstance() {
     if (!instance) {
       instance = new MessagesMemoryDao([]);
