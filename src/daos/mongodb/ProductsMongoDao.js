@@ -15,7 +15,7 @@ export default class ProductsMongoDao extends MongoDao {
     try {
       if (product) {
         const addTime = Date.now();
-        const productDto = new ProductsDto(null, product, addTime);
+        const productDto = new ProductsDto(undefined, product, addTime);
         const { _id } = await this.items.create(productDto);
         productDto._id = _id;
         consoleLogger.info(
@@ -26,6 +26,7 @@ export default class ProductsMongoDao extends MongoDao {
       throw new Error("Must provide a product");
     } catch (error) {
       errorLogger.error("Error adding product: " + error);
+      throw error;
     }
   }
 
