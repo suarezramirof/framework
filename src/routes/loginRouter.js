@@ -1,6 +1,8 @@
 import { Router } from "express";
 import passport from "passport";
+import config from "../config.js";
 const loginRouter = Router();
+const { NODE_ENV } = config;
 
 loginRouter.post(
   "/register",
@@ -36,10 +38,14 @@ loginRouter.get("/logout", checkAuthenticated, (req, res) => {
 });
 
 export function checkAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
+  if (NODE_ENV == "development") {
     return next();
   } else {
-    res.json("Not authenticated");
+    if (req.isAuthenticated()) {
+      return next();
+    } else {
+      res.json("Not authenticated");
+    }
   }
 }
 
