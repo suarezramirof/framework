@@ -2,6 +2,7 @@ import { Router } from "express";
 import loginRouter, { checkAuthenticated } from "./loginRouter.js";
 import productsRouter from "./productsRouter.js";
 import messageRouter from "./messageRouter.js";
+import graphqlRouter from "./graphqlRouter.js";
 import { infoRouter, randomNumberRouter } from "./miscRoutes.js";
 import pinoLogger from "../utils/logger.js";
 const router = Router();
@@ -10,6 +11,7 @@ router.use("/api", checkAuthenticated, messageRouter);
 router.use("/api", checkAuthenticated, randomNumberRouter);
 router.use("/", loginRouter);
 router.use("/info", checkAuthenticated, infoRouter);
+router.use("/", graphqlRouter);
 
 const warnLogger = pinoLogger.buildWarnLogger();
 const logger = pinoLogger.buildConsoleLogger();

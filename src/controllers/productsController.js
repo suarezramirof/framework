@@ -14,6 +14,15 @@ productsController.getProducts = (_req, res) => {
     .catch((error) => res.json(error));
 };
 
+productsController.getProduct = (req, res) => {
+  productsService
+    .getProductById(req.params.id)
+    .then((data) => {
+      return res.json(data);
+    })
+    .catch((error) => res.json(error));
+}
+
 productsController.addProduct = (req, res) => {
   productsService
     .addProduct(req.body)
