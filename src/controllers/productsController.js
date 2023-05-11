@@ -5,52 +5,54 @@ const errorLogger = PinoLogger.buildErrorLogger();
 const productsService = new ProductsService();
 const productsController = {};
 
-productsController.getProducts = (_req, res) => {
-  productsService
-    .getProducts()
-    .then((data) => {
-      return res.json(data);
-    })
-    .catch((error) => res.json(error));
+productsController.getProducts = async (ctx) => {
+  try {
+    ctx.body = await productsService.getProducts();
+  } catch (error) {
+    errorLogger.error(error);
+    ctx.status = error.code ? error.code : 500;
+    ctx.body = error.message;
+  }
 };
 
-productsController.getProduct = (req, res) => {
-  productsService
-    .getProductById(req.params.id)
-    .then((data) => {
-      return res.json(data);
-    })
-    .catch((error) => res.json(error));
+productsController.getProduct = async (ctx) => {
+  try {
+    ctx.body = await productsService.getProductById(ctx.params.id);
+  } catch (error) {
+    errorLogger.error(error);
+    ctx.status = error.code ? error.code : 500;
+    ctx.body = error.message;
+  }
+};
+
+productsController.addProduct = async (ctx) => {
+  try {
+    ctx.body = await productsService.addProduct(ctx.request.body);
+  } catch (error) {
+    errorLogger.error(error);
+    ctx.status = error.code ? error.code : 500;
+    ctx.body = error.message;
+  }
+};
+
+productsController.updateProduct = async (ctx) => {
+  try {
+    ctx.body = await productsService.updateProduct(ctx.params.id, ctx.request.body);
+  } catch (error) {
+    errorLogger.error(error);
+    ctx.status = error.code ? error.code : 500;
+    ctx.body = error.message;
+  }
 }
 
-productsController.addProduct = (req, res) => {
-  productsService
-    .addProduct(req.body)
-    .then((response) => res.status(200).json(response))
-    .catch((error) => {
-      errorLogger.error(error);
-      res.status(error.code ? error.code : 500).send(error.message);
-    });
-};
-
-productsController.updateProduct = (req, res) => {
-  productsService
-    .updateProduct(req.params.id, req.body)
-    .then((response) => res.json(response))
-    .catch((error) => {
-      errorLogger.error(error);
-      res.status(error.code ? error.code : 500).send(error.message);
-    });
-};
-
-productsController.deleteProduct = (req, res) => {
-  productsService
-    .deleteProduct(req.params.id)
-    .then((response) => res.json(response))
-    .catch((error) => {
-      errorLogger.error(error);
-      res.status(error.code ? error.code : 500).send(error.message);
-    });
-};
+productsController.deleteProduct = async (ctx) => {
+  try {
+    ctx.body = await productsService.deleteProduct(ctx.params.id);
+  } catch (error) {
+    errorLogger.error(error);
+    ctx.status = error.code ? error.code : 500;
+    ctx.body = error.message;
+  }
+}
 
 export default productsController;

@@ -1,17 +1,10 @@
 import router from "./src/routes/index.js";
-import cors from "cors";
-import express from "express";
-import cookieParser from "cookie-parser";
-import sessionMiddleware from "./src/auth/session.js";
-import passport from "passport";
-import { createServer } from "http";
-import { Server } from "socket.io";
-import * as socket from "./src/sockets/socket_io.js";
-import initializePassport from "./src/auth/passport-config.js";
+import Koa from "koa";
+import { koaBody } from "koa-body";
+import Router from "koa-router";
 import config from "./src/config.js";
 import cluster from "cluster";
 import os from "os";
-import pinoLogger from "./src/utils/logger.js";
 
 // Config
 const { PORT, MODE, NODE_ENV } = config;
@@ -33,55 +26,24 @@ if (MODE === "CLUSTER" && cluster.isPrimary) {
 } else {
   // Express
 
-  const app = express();
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
-  app.use(express.static("./public"));
-  if (NODE_ENV === "development") {
-    console.log("Using cors");
-    app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
-  }
-
-  // Session
-  if (NODE_ENV != "development") {
-    app.use(cookieParser());
-    app.use(sessionMiddleware);
-  }
-
-  // Passport
-  if (NODE_ENV != "development") {
-    app.use(passport.initialize());
-    app.use(passport.session());
-    initializePassport(passport);
-  }
-
-  // Logs
-
-  const logger = pinoLogger.buildConsoleLogger();
-
-  app.use("/", (req, res, next) => {
-    logger.info(
-      `Solicitud con ruta < ${req.originalUrl} > y metodo ${req.method} recibida.`
-    );
-    next();
-  });
+  const app = new Koa();
+  app.use(koaBody());
 
   //Route
 
-  app.use("/", router);
+  const route = new Router();
+  route.get("/", (ctx) => {
+    ctx.body = "Hola Mundo";
+  });
+  app.use(router.routes());
 
   // Server
 
-  const httpServer = createServer(app);
-  const server = httpServer.listen(PORT, () => {
+  const server = app.listen(PORT, () => {
     console.log(`Servidor listo en el puerto ${server.address().port}`);
   });
+
   server.on("error", (error) => {
     console.log(`Error en el servidor: ${error}`);
   });
-
-  // Socket io
-
-  const io = new Server(httpServer);
-  socket.start(io);
 }

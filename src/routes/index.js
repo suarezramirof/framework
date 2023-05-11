@@ -1,27 +1,27 @@
-import { Router } from "express";
-import loginRouter, { checkAuthenticated } from "./loginRouter.js";
-import productsRouter from "./productsRouter.js";
-import messageRouter from "./messageRouter.js";
-import graphqlRouter from "./graphqlRouter.js";
-import { infoRouter, randomNumberRouter } from "./miscRoutes.js";
+import Router from "koa-router";
+import productsController from "../controllers/productsController.js";
+import messagesController from "../controllers/messagesController.js";
 import pinoLogger from "../utils/logger.js";
-const router = Router();
-router.use("/api", checkAuthenticated, productsRouter);
-router.use("/api", checkAuthenticated, messageRouter);
-router.use("/api", checkAuthenticated, randomNumberRouter);
-router.use("/", loginRouter);
-router.use("/info", checkAuthenticated, infoRouter);
-router.use("/", graphqlRouter);
+const router = new Router();
+router.get("/api/productos", productsController.getProducts);
+router.get("/api/productos/:id", productsController.getProduct);
+router.post("/api/productos", productsController.addProduct);
+router.put("/api/productos/:id", productsController.updateProduct);
+router.delete("/api/productos/:id", productsController.deleteProduct);
+router.get("/api/mensajes", messagesController.getMessages);
+router.post("/api/mensajes", messagesController.sendMessage);
+router.delete("/api/mensajes/:id", messagesController.deleteMessage);
 
 const warnLogger = pinoLogger.buildWarnLogger();
-const logger = pinoLogger.buildConsoleLogger();
-router.use("*", (req, res) => {
-  logger.warn(
-    `Ruta < ${req.originalUrl} > con metodo ${req.method} no implementada`
-  );
+
+router.all(/.*/, async (ctx) => {
   warnLogger.warn(
-    `Ruta < ${req.originalUrl} > con método ${req.method} no implementada`
+    `Ruta < ${ctx.originalUrl} > con método ${ctx.method} no implementada`
   );
-  res.sendStatus(404);
+  ctx.status = 404;
+  return (ctx.body = {
+    error: -2,
+    descripcion: `ruta ${ctx.originalUrl} con método ${ctx.method} no implementada`,
+  });
 });
 export default router;
